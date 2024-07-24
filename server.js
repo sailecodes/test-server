@@ -36,26 +36,26 @@ await apolloServer.start();
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(
-  helmet({
-    crossOriginEmbedderPolicy: process.env.NODE_ENV !== "development",
-    // contentSecurityPolicy: process.env.NODE_ENV !== "development",
-  })
-);
-app.use(
-  helmet.contentSecurityPolicy({
-    useDefaults: process.env.NODE_ENV !== "development",
-    directives: {
-      "img-src": ["'self'", "https: data: blob:"],
-    },
-  })
-);
-app.use(
-  cors({
-    origin: ["https://saile-test-client.netlify.app", "http://localhost:5173"],
-    credentials: true,
-  })
-);
+// app.use(
+//   helmet({
+//     crossOriginEmbedderPolicy: process.env.NODE_ENV !== "development",
+//     // contentSecurityPolicy: process.env.NODE_ENV !== "development",
+//   })
+// );
+// app.use(
+//   helmet.contentSecurityPolicy({
+//     useDefaults: process.env.NODE_ENV !== "development",
+//     directives: {
+//       "img-src": ["'self'", "https: data: blob:"],
+//     },
+//   })
+// );
+// app.use(
+//   cors({
+//     origin: ["https://saile-test-client.netlify.app", "http://localhost:5173"],
+//     credentials: true,
+//   })
+// );
 
 // ===============================================================================================
 // Routes
