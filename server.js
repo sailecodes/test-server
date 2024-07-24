@@ -48,7 +48,7 @@ app.use(
 // ===============================================================================================
 
 app.use(
-  "/graphql",
+  "/",
   expressMiddleware(apolloServer, {
     context: ({ req, res }) => ({ req, res }),
   })
