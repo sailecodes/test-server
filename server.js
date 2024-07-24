@@ -1,8 +1,8 @@
 import "express-async-errors";
 import * as dotenv from "dotenv";
 import express from "express";
-import url from "url";
-import path, { dirname } from "path";
+// import url from "url";
+// import path, { dirname } from "path";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import cors from "cors";
@@ -20,7 +20,7 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 5199;
-const __dirname = dirname(url.fileURLToPath(import.meta.url));
+// const __dirname = dirname(url.fileURLToPath(import.meta.url));
 
 const typeDefs = await readFile("./schema.graphql", "utf-8");
 const apolloServer = new ApolloServer({ typeDefs, resolvers });
@@ -31,7 +31,7 @@ await apolloServer.start();
 // Middleware
 // ===============================================================================================
 
-app.use(express.static(path.resolve(__dirname, "./public")));
+// app.use(express.static(path.resolve(__dirname, "./public")));
 app.use(express.json());
 app.use(cookieParser());
 app.use(
@@ -42,7 +42,10 @@ app.use(
 );
 app.use(
   cors({
-    origin: ["https://studio.apollographql.com", "http://localhost:5173", "https://saileiv-test.up.railway.app/"],
+    origin: [
+      /*"https://studio.apollographql.com",*/ "http://localhost:5173",
+      "https://saile-test-client.up.railway.app/",
+    ],
     credentials: true,
   })
 );
