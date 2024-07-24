@@ -46,7 +46,7 @@ app.use(
   helmet.contentSecurityPolicy({
     useDefaults: process.env.NODE_ENV !== "development",
     directives: {
-      "img-src": ["'self'", "https: data:"],
+      "img-src": ["'self'", "https: data: blob:"],
     },
   })
 );
