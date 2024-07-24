@@ -42,7 +42,8 @@ app.use(
 );
 app.use(
   cors({
-    origin: [/*"https://studio.apollographql.com",*/ "http://localhost:5173", "https://saile-test-client.netlify.app/"],
+    // origin: [/*"https://studio.apollographql.com",*/ "http://localhost:5173", "https://saile-test-client.netlify.app"],
+    origin: "https://saile-test-client.netlify.app/",
     credentials: true,
   })
 );
