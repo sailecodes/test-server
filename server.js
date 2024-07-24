@@ -62,9 +62,7 @@ app.use(
         "img-src": ["'self'", "https: data:"],
       },
     },
-    crossOriginResourcePolicy: {
-      policy: "cross-origin",
-    },
+    crossOriginResourcePolicy: false,
   }),
   expressMiddleware(apolloServer, {
     context: ({ req, res }) => ({ req, res }),
