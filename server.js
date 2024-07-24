@@ -51,15 +51,15 @@ app.use(
 // Routes
 // ===============================================================================================
 
-app.get("/", (req, res) => {
-  return res.status(200).json({ data: "home" });
-});
+// app.get("/", (req, res) => {
+//   return res.status(200).json({ data: "home" });
+// });
 
-app.get("/api/v1/test", async (req, res) => {
-  const result = await db.query(`SELECT * FROM dummy_table`);
+// app.get("/api/v1/test", async (req, res) => {
+//   const result = await db.query(`SELECT * FROM dummy_table`);
 
-  return res.status(200).json(result.rows[0]);
-});
+//   return res.status(200).json(result.rows[0]);
+// });
 
 app.use(
   "/graphql",
@@ -75,7 +75,7 @@ app.use(
 try {
   app.listen(port, () => {
     console.log(`(Server message) Server is listening on port ${port}`);
-    console.log(`[Server message] GraphQL endpoint at http://localhost:${port}/graphql`);
+    console.log(`[Server message] GraphQL endpoint at ${port}/graphql`);
   });
 } catch (error) {
   console.error(`Error message: ${error}`);
