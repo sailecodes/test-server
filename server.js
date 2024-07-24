@@ -57,12 +57,18 @@ app.use(
   helmet({
     crossOriginEmbedderPolicy: process.env.NODE_ENV !== "development",
     contentSecurityPolicy: {
-      useDefaults: true,
       directives: {
-        "img-src": ["'self'", "https: data:"],
+        defaultSrc: ["'self'", "'unsafe-inline'"],
+        baseUri: ["'self'"],
+        blockAllMixedContent: [],
+        fontSrc: ["'self'", "https:", "data:"],
+        frameAncestors: ["'self'"],
+        imgSrc: ["'self'", "data:"],
+        objectSrc: ["'none'"],
+        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+        upgradeInsecureRequests: [],
       },
     },
-    crossOriginResourcePolicy: false,
   }),
   expressMiddleware(apolloServer, {
     context: ({ req, res }) => ({ req, res }),
