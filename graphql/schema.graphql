@@ -2,6 +2,10 @@ type Query {
   test: Dummy!
 }
 
+type Mutation {
+  mutationTest: String!
+}
+
 type Dummy {
   dummy_attr: String!
 }

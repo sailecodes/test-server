@@ -8,6 +8,9 @@ const resolvers = {
       return result.rows[1];
     },
   },
+  Mutation: {
+    mutationTest: (_parent, _args, _context) => "Mutation Test Successful",
+  },
 };
 
 export default resolvers;
