@@ -6,7 +6,7 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import cors from "cors";
-import resolvers from "./resolver.js";
+import resolvers from "./graphql/resolver.js";
 import db from "./db/initDB.js";
 import { readFile } from "fs/promises";
 import { ApolloServer } from "@apollo/server";
@@ -22,7 +22,7 @@ const app = express();
 const port = process.env.PORT || 5199;
 // const __dirname = dirname(url.fileURLToPath(import.meta.url));
 
-const typeDefs = await readFile("./schema.graphql", "utf-8");
+const typeDefs = await readFile("./graphql/schema.graphql", "utf-8");
 const apolloServer = new ApolloServer({ typeDefs, resolvers });
 
 await apolloServer.start();
