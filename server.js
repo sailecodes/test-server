@@ -47,14 +47,8 @@ app.use(
 // Routes
 // ===============================================================================================
 
-// app.get("/api/v1/test", async (req, res) => {
-//   const result = await db.query(`SELECT * FROM dummy_table`);
-
-//   return res.status(200).json(result.rows[0]);
-// });
-
 app.use(
-  "/",
+  "/graphql",
   expressMiddleware(apolloServer, {
     context: ({ req, res }) => ({ req, res }),
   })
@@ -67,6 +61,12 @@ app.use(
     contentSecurityPolicy: process.env.NODE_ENV !== "development",
   })
 );
+
+app.get("/api/v1/test", async (req, res) => {
+  const result = await db.query(`SELECT * FROM dummy_table`);
+
+  return res.status(200).json(result.rows[0]);
+});
 
 // ===============================================================================================
 // Additional information
