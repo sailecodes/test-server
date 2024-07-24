@@ -26,7 +26,7 @@ const typeDefs = await readFile("./graphql/schema.graphql", "utf-8");
 const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
-  plugins: [ApolloServerPluginDrainHttpServer({ httpServer }), ApolloServerPluginLandingPageDisabled()],
+  plugins: [ApolloServerPluginLandingPageDisabled(), ApolloServerPluginDrainHttpServer({ httpServer })],
 });
 
 await apolloServer.start();
