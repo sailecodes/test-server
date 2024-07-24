@@ -58,15 +58,9 @@ app.use(
     crossOriginEmbedderPolicy: process.env.NODE_ENV !== "development",
     contentSecurityPolicy: {
       directives: {
-        defaultSrc: ["'self'", "'unsafe-inline'"],
-        baseUri: ["'self'"],
-        blockAllMixedContent: [],
-        fontSrc: ["'self'", "https:", "data:"],
-        frameAncestors: ["'self'"],
-        imgSrc: ["'self'", "data:"],
-        objectSrc: ["'none'"],
-        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
-        upgradeInsecureRequests: [],
+        imgSrc: ["'none'"],
+        scriptSrc: ["'none'"],
+        defaultSrc: ["'none'"],
       },
     },
   }),
