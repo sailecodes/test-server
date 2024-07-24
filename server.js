@@ -26,7 +26,7 @@ const typeDefs = await readFile("./graphql/schema.graphql", "utf-8");
 const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
-  plugins: [ApolloServerPluginLandingPageDisabled(), ApolloServerPluginDrainHttpServer({ httpServer })],
+  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 });
 
 await apolloServer.start();
@@ -70,10 +70,10 @@ app.use(cookieParser());
 
 app.use(
   "/",
-  // cors({
-  //   origin: ["https://saile-test-client.netlify.app", "http://localhost:5173"],
-  //   credentials: true,
-  // }),
+  cors({
+    origin: ["https://saile-test-client.netlify.app", "http://localhost:5173"],
+    credentials: true,
+  }),
   // helmet({
   //   crossOriginEmbedderPolicy: process.env.NODE_ENV !== "development",
   //   contentSecurityPolicy: process.env.NODE_ENV !== "development",
