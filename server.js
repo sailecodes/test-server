@@ -74,10 +74,10 @@ app.use(
     origin: ["https://saile-test-client.netlify.app", "http://localhost:5173"],
     credentials: true,
   }),
-  helmet({
-    crossOriginEmbedderPolicy: process.env.NODE_ENV === "development" ? false : undefined,
-    contentSecurityPolicy: process.env.NODE_ENV === "development" ? false : undefined,
-  }),
+  // helmet({
+  //   crossOriginEmbedderPolicy: process.env.NODE_ENV !== "development",
+  //   contentSecurityPolicy: process.env.NODE_ENV !== "development",
+  // }),
   expressMiddleware(apolloServer, {
     context: ({ req, res }) => ({ req, res }),
   })
