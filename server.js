@@ -37,10 +37,10 @@ await apolloServer.start();
 app.use(express.json());
 app.use(cookieParser());
 // app.use(
-//   helmet({
-//     crossOriginEmbedderPolicy: process.env.NODE_ENV !== "development",
-//     // contentSecurityPolicy: process.env.NODE_ENV !== "development",
-//   })
+// helmet({
+//   crossOriginEmbedderPolicy: process.env.NODE_ENV === "development" ? false : undefined,
+//   contentSecurityPolicy: process.env.NODE_ENV === "development" ? false : undefined,
+// });
 // );
 // app.use(
 //   helmet.contentSecurityPolicy({
@@ -61,14 +61,22 @@ app.use(cookieParser());
 // Routes
 // ===============================================================================================
 
-app.get("/api/v1/test", async (req, res) => {
-  const result = await db.query(`SELECT * FROM dummy_table`);
+// app.get("/api/v1/test", async (req, res) => {
+//   const result = await db.query(`SELECT * FROM dummy_table`);
 
-  return res.status(200).json(result.rows[0]);
-});
+//   return res.status(200).json(result.rows[0]);
+// });
 
 app.use(
   "/",
+  cors({
+    origin: ["https://saile-test-client.netlify.app", "http://localhost:5173"],
+    credentials: true,
+  }),
+  helmet({
+    crossOriginEmbedderPolicy: process.env.NODE_ENV === "development" ? false : undefined,
+    contentSecurityPolicy: process.env.NODE_ENV === "development" ? false : undefined,
+  }),
   expressMiddleware(apolloServer, {
     context: ({ req, res }) => ({ req, res }),
   })
