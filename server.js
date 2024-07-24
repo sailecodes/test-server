@@ -10,6 +10,7 @@ import { readFile } from "fs/promises";
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
+import { ApolloServerPluginLandingPageDisabled } from "@apollo/server/plugin/disabled";
 
 // ===============================================================================================
 // Initialization
@@ -25,7 +26,7 @@ const typeDefs = await readFile("./graphql/schema.graphql", "utf-8");
 const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
-  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+  plugins: [ApolloServerPluginDrainHttpServer({ httpServer }), ApolloServerPluginLandingPageDisabled()],
 });
 
 await apolloServer.start();
