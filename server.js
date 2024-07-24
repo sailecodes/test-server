@@ -42,7 +42,7 @@ app.use(
 );
 app.use(
   cors({
-    origin: ["https://saile-test-client.netlify.app", "http://localhost:5173"],
+    origin: ["https://saile-test-client.netlify.app/", "http://localhost:5173"],
     credentials: true,
   })
 );
@@ -50,6 +50,10 @@ app.use(
 // ===============================================================================================
 // Routes
 // ===============================================================================================
+
+app.get("/", (req, res) => {
+  return res.status(200).json({ data: "home" });
+});
 
 app.get("/api/v1/test", async (req, res) => {
   const result = await db.query(`SELECT * FROM dummy_table`);
