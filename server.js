@@ -10,7 +10,6 @@ import { readFile } from "fs/promises";
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
-import { ApolloServerPluginLandingPageDisabled } from "@apollo/server/plugin/disabled";
 
 // ===============================================================================================
 // Initialization
@@ -37,6 +36,12 @@ await apolloServer.start();
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(
+  cors({
+    origin: ["https://saile-test-client.netlify.app", "http://localhost:5173"],
+    credentials: true,
+  })
+);
 
 // ===============================================================================================
 // Routes
@@ -50,22 +55,16 @@ app.use(cookieParser());
 
 app.use(
   "/",
-  cors({
-    origin: ["https://saile-test-client.netlify.app", "http://localhost:5173"],
-    credentials: true,
-  }),
-  helmet({
-    crossOriginEmbedderPolicy: process.env.NODE_ENV !== "development",
-    contentSecurityPolicy: {
-      directives: {
-        imgSrc: ["'none'"],
-        scriptSrc: ["'none'"],
-        defaultSrc: ["'none'"],
-      },
-    },
-  }),
   expressMiddleware(apolloServer, {
     context: ({ req, res }) => ({ req, res }),
+  })
+);
+
+// Additional middleware for security on REST routes
+app.use(
+  helmet({
+    crossOriginEmbedderPolicy: process.env.NODE_ENV !== "development",
+    contentSecurityPolicy: process.env.NODE_ENV !== "development",
   })
 );
 
