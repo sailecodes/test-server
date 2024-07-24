@@ -1,16 +1,15 @@
 import "express-async-errors";
 import * as dotenv from "dotenv";
 import express from "express";
-// import url from "url";
-// import path, { dirname } from "path";
+import http from "http";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import cors from "cors";
 import resolvers from "./graphql/resolver.js";
-import db from "./db/initDB.js";
 import { readFile } from "fs/promises";
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
+import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 
 // ===============================================================================================
 // Initialization
@@ -19,11 +18,15 @@ import { expressMiddleware } from "@apollo/server/express4";
 dotenv.config();
 
 const app = express();
+const httpServer = http.createServer(app);
 const port = process.env.PORT || 5199;
-// const __dirname = dirname(url.fileURLToPath(import.meta.url));
 
 const typeDefs = await readFile("./graphql/schema.graphql", "utf-8");
-const apolloServer = new ApolloServer({ typeDefs, resolvers });
+const apolloServer = new ApolloServer({
+  typeDefs,
+  resolvers,
+  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+});
 
 await apolloServer.start();
 
@@ -31,7 +34,6 @@ await apolloServer.start();
 // Middleware
 // ===============================================================================================
 
-// app.use(express.static(path.resolve(__dirname, "./public")));
 app.use(express.json());
 app.use(cookieParser());
 app.use(
@@ -51,18 +53,14 @@ app.use(
 // Routes
 // ===============================================================================================
 
-// app.get("/", (req, res) => {
-//   return res.status(200).json({ data: "home" });
-// });
+app.get("/api/v1/test", async (req, res) => {
+  const result = await db.query(`SELECT * FROM dummy_table`);
 
-// app.get("/api/v1/test", async (req, res) => {
-//   const result = await db.query(`SELECT * FROM dummy_table`);
-
-//   return res.status(200).json(result.rows[0]);
-// });
+  return res.status(200).json(result.rows[0]);
+});
 
 app.use(
-  "/graphql",
+  "/",
   expressMiddleware(apolloServer, {
     context: ({ req, res }) => ({ req, res }),
   })
@@ -73,11 +71,9 @@ app.use(
 // ===============================================================================================
 
 try {
-  app.listen(port, () => {
-    console.log(`(Server message) Server is listening on port ${port}`);
-    console.log(`[Server message] GraphQL endpoint at ${port}/graphql`);
-  });
+  await new Promise((resolve) => httpServer.listen({ port }, resolve));
+  console.log(`[Server message] Server is listening on port ${port}`);
 } catch (error) {
-  console.error(`Error message: ${error}`);
+  console.error(`[Server message] Error: ${error}`);
   process.exit(1);
 }
