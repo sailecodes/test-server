@@ -3,9 +3,10 @@ import * as dotenv from "dotenv";
 import express from "express";
 import http from "http";
 import cookieParser from "cookie-parser";
-import helmet from "helmet";
+// import helmet from "helmet";
 import cors from "cors";
 import resolvers from "./graphql/resolver.js";
+import db from "./db/initDB.js";
 import { readFile } from "fs/promises";
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
@@ -47,26 +48,26 @@ app.use(
 // Routes
 // ===============================================================================================
 
-app.use(
-  "/",
-  expressMiddleware(apolloServer, {
-    context: ({ req, res }) => ({ req, res }),
-  })
-);
-
-// Additional middleware for security on REST routes
-app.use(
-  helmet({
-    crossOriginEmbedderPolicy: process.env.NODE_ENV !== "development",
-    contentSecurityPolicy: process.env.NODE_ENV !== "development",
-  })
-);
-
 app.get("/api/v1/test", async (req, res) => {
   const result = await db.query(`SELECT * FROM dummy_table`);
 
   return res.status(200).json(result.rows[0]);
 });
+
+app.use(
+  "/graphql",
+  expressMiddleware(apolloServer, {
+    context: ({ req, res }) => ({ req, res }),
+  })
+);
+
+// // Additional middleware for security on REST routes
+// app.use(
+//   helmet({
+//     crossOriginEmbedderPolicy: process.env.NODE_ENV !== "development",
+//     contentSecurityPolicy: process.env.NODE_ENV !== "development",
+//   })
+// );
 
 // ===============================================================================================
 // Additional information
